@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Entraînement Mémoire - Chiffres</title>
+  <title>Memory Training - Digits</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -45,16 +45,16 @@
 </head>
 <body>
 
-  <h1>Entraînement mémoire - chiffres inversés</h1>
-  <button id="startBtn">Commencer</button>
-  <input type="text" id="response" placeholder="Tape ici" disabled />
+  <h1>Memory training - reversed digits</h1>
+  <button id="startBtn">Start</button>
+  <input type="text" id="response" placeholder="Type here" disabled />
   <div id="feedback"></div>
 
   <script>
     let currentNumber = "";
 
     function generateNumber() {
-      const length = Math.floor(Math.random() * 5) + 3; // entre 3 et 7
+      const length = Math.floor(Math.random() * 5) + 3; // between 3 and 7
       let num = "";
       for (let i = 0; i < length; i++) {
         num += Math.floor(Math.random() * 10);
@@ -65,8 +65,8 @@
     function speakNumber(num) {
       const synth = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(num.split("").join(" "));
-      utterance.lang = "fr-FR";
-      const voices = synth.getVoices().filter(v => v.lang.startsWith("fr"));
+      utterance.lang = "en-US";
+      const voices = synth.getVoices().filter(v => v.lang.startsWith("en"));
       if (voices.length > 0) utterance.voice = voices[0];
       synth.speak(utterance);
     }
@@ -86,10 +86,10 @@
         const userInput = e.target.value.trim();
         const reversed = currentNumber.split("").reverse().join("");
         if (userInput === reversed) {
-          document.getElementById("feedback").textContent = "✅ Correct !";
+          document.getElementById("feedback").textContent = "✅ Correct!";
           document.getElementById("feedback").style.color = "lightgreen";
         } else {
-          document.getElementById("feedback").textContent = "❌ Faux (" + reversed + ")";
+          document.getElementById("feedback").textContent = "❌ Wrong (" + reversed + ")";
           document.getElementById("feedback").style.color = "red";
         }
         e.target.disabled = true;
