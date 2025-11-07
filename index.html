@@ -3,55 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <title>Memory Training - Digits</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #111;
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background: #000;
       color: #eee;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      height: 100vh;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 1.5em;
+      margin-bottom: 10px;
       text-align: center;
     }
+    #score {
+      font-size: 1.3em;
+      margin-bottom: 15px;
+      color: #00ff7f;
+    }
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
     button {
-      font-size: 1.1em;
-      padding: 10px 20px;
-      margin: 8px;
+      font-size: 1.3em;
+      padding: 16px 24px;
       border: none;
-      border-radius: 8px;
+      border-radius: 12px;
       background-color: #007bff;
       color: white;
       cursor: pointer;
+      flex: 1 1 100px;
     }
     button:hover {
       background-color: #0056b3;
     }
     input {
-      font-size: 1.2em;
-      padding: 8px;
-      border-radius: 5px;
-      border: 1px solid #555;
-      background: #222;
-      color: #eee;
+      font-size: 1.5em;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #444;
+      background: #111;
+      color: #fff;
       text-align: center;
-      width: 150px;
+      width: 60%;
+      max-width: 250px;
     }
     #feedback {
-      font-size: 1.4em;
-      margin-top: 15px;
-    }
-    #score {
-      font-size: 1.3em;
-      margin-bottom: 15px;
-      color: #0f0;
-    }
-    .btn-group {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
+      font-size: 1.5em;
+      margin-top: 20px;
+      text-align: center;
     }
   </style>
 </head>
@@ -59,11 +71,13 @@
 
   <h1>Memory training - reversed digits</h1>
   <div id="score">Score: 0 / 0</div>
+
   <div class="btn-group">
-    <button id="startBtn">Start</button>
+    <button id="startBtn">▶️ Start</button>
     <button id="replayBtn" disabled>🔁 Replay</button>
     <button id="nextBtn" disabled>⏭️ Next</button>
   </div>
+
   <input type="text" id="response" placeholder="Type here" disabled />
   <div id="feedback"></div>
 
@@ -79,15 +93,13 @@
     function generateNumber() {
       const length = Math.floor(Math.random() * 5) + 3; // between 3 and 7
       let num = "";
-      for (let i = 0; i < length; i++) {
-        num += Math.floor(Math.random() * 10);
-      }
+      for (let i = 0; i < length; i++) num += Math.floor(Math.random() * 10);
       return num;
     }
 
     function speakNumber(num) {
       const synth = window.speechSynthesis;
-      synth.cancel(); // stop any current speech
+      synth.cancel();
       const utterance = new SpeechSynthesisUtterance(num.split("").join(" "));
       utterance.lang = "en-US";
       utterance.rate = 0.9;
@@ -109,17 +121,11 @@
       document.getElementById("nextBtn").disabled = false;
     }
 
-    document.getElementById("startBtn").addEventListener("click", () => {
-      startNewNumber();
-    });
-
+    document.getElementById("startBtn").addEventListener("click", () => startNewNumber());
     document.getElementById("replayBtn").addEventListener("click", () => {
       if (currentNumber) speakNumber(currentNumber);
     });
-
-    document.getElementById("nextBtn").addEventListener("click", () => {
-      startNewNumber();
-    });
+    document.getElementById("nextBtn").addEventListener("click", () => startNewNumber());
 
     document.getElementById("response").addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
@@ -139,7 +145,7 @@
       }
     });
 
-    // Ensure voices are loaded
+    // Fix for some mobile browsers not loading voices
     window.speechSynthesis.onvoiceschanged = () => {};
   </script>
 </body>
