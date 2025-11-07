@@ -13,11 +13,12 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
+      text-align: center;
     }
     button {
-      font-size: 1.2em;
+      font-size: 1.1em;
       padding: 10px 20px;
-      margin: 10px;
+      margin: 8px;
       border: none;
       border-radius: 8px;
       background-color: #007bff;
@@ -46,13 +47,23 @@
       margin-bottom: 15px;
       color: #0f0;
     }
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
   </style>
 </head>
 <body>
 
   <h1>Memory training - reversed digits</h1>
-  <div id="score">Score: 0</div>
-  <button id="startBtn">Start</button>
+  <div id="score">Score: 0 / 0</div>
+  <div class="btn-group">
+    <button id="startBtn">Start</button>
+    <button id="replayBtn" disabled>🔁 Replay</button>
+    <button id="nextBtn" disabled>⏭️ Next</button>
+  </div>
   <input type="text" id="response" placeholder="Type here" disabled />
   <div id="feedback"></div>
 
@@ -76,15 +87,16 @@
 
     function speakNumber(num) {
       const synth = window.speechSynthesis;
+      synth.cancel(); // stop any current speech
       const utterance = new SpeechSynthesisUtterance(num.split("").join(" "));
       utterance.lang = "en-US";
-      utterance.rate = 0.9; // slightly slower, easier to hear
+      utterance.rate = 0.9;
       const voices = synth.getVoices().filter(v => v.lang.startsWith("en"));
       if (voices.length > 0) utterance.voice = voices[0];
       synth.speak(utterance);
     }
 
-    document.getElementById("startBtn").addEventListener("click", () => {
+    function startNewNumber() {
       document.getElementById("feedback").textContent = "";
       document.getElementById("response").value = "";
       document.getElementById("response").disabled = false;
@@ -92,6 +104,21 @@
 
       currentNumber = generateNumber();
       speakNumber(currentNumber);
+
+      document.getElementById("replayBtn").disabled = false;
+      document.getElementById("nextBtn").disabled = false;
+    }
+
+    document.getElementById("startBtn").addEventListener("click", () => {
+      startNewNumber();
+    });
+
+    document.getElementById("replayBtn").addEventListener("click", () => {
+      if (currentNumber) speakNumber(currentNumber);
+    });
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      startNewNumber();
     });
 
     document.getElementById("response").addEventListener("keydown", (e) => {
