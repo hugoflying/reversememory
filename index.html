@@ -71,6 +71,7 @@
       text-align: center;
       width: 80%;
       max-width: 250px;
+      outline: none;
     }
     #feedback {
       font-size: 1.5em;
@@ -94,7 +95,14 @@
     <button id="nextBtn" disabled>⏭️ Next</button>
   </div>
 
-  <input type="tel" inputmode="numeric" pattern="[0-9]*" id="response" placeholder="Type here" disabled />
+  <input 
+    type="tel" 
+    id="response" 
+    inputmode="numeric" 
+    pattern="[0-9]*" 
+    placeholder="Type here" 
+    disabled 
+  />
   <div id="feedback"></div>
 
   <script>
@@ -126,9 +134,10 @@
 
     function startNewNumber() {
       document.getElementById("feedback").textContent = "";
-      document.getElementById("response").value = "";
-      document.getElementById("response").disabled = false;
-      document.getElementById("response").focus();
+      const input = document.getElementById("response");
+      input.value = "";
+      input.disabled = false;
+      input.focus();
 
       currentNumber = generateNumber();
       speakNumber(currentNumber);
@@ -143,7 +152,17 @@
     });
     document.getElementById("nextBtn").addEventListener("click", () => startNewNumber());
 
-    document.getElementById("response").addEventListener("keydown", (e) => {
+    const inputField = document.getElementById("response");
+
+    // Autorise uniquement les chiffres
+    inputField.addEventListener("beforeinput", (e) => {
+      if (e.data && !/[0-9]/.test(e.data)) {
+        e.preventDefault();
+      }
+    });
+
+    inputField.addEventListener("keydown", (e) => {
+      // Autorise Enter et effacement
       if (e.key === "Enter") {
         const userInput = e.target.value.trim();
         const reversed = currentNumber.split("").reverse().join("");
@@ -161,7 +180,12 @@
       }
     });
 
-    // Ensure voices load properly
+    // Force le focus si on clique dans la case
+    inputField.addEventListener("click", () => {
+      if (!inputField.disabled) inputField.focus();
+    });
+
+    // S’assure que les voix sont chargées
     window.speechSynthesis.onvoiceschanged = () => {};
   </script>
 </body>
