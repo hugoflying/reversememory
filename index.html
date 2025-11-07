@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Memory Training - Digits</title>
+  <title>MEMORY TRAINING - Reversed digits</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <style>
     html, body {
@@ -17,16 +17,26 @@
       justify-content: center;
       align-items: center;
       font-family: Arial, sans-serif;
+      text-align: center;
       overflow: hidden;
+      box-sizing: border-box;
+      padding: 0 5%;
     }
     h1 {
-      font-size: 1.5em;
-      margin-bottom: 10px;
-      text-align: center;
+      font-size: 1.8em;
+      margin-bottom: 0.3em;
+      text-transform: uppercase;
+    }
+    h2 {
+      font-size: 1.2em;
+      margin-top: 0;
+      margin-bottom: 1em;
+      font-weight: normal;
+      color: #bbb;
     }
     #score {
       font-size: 1.3em;
-      margin-bottom: 15px;
+      margin-bottom: 1em;
       color: #00ff7f;
     }
     .btn-group {
@@ -34,17 +44,19 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 12px;
-      margin-bottom: 15px;
+      margin-bottom: 1em;
+      width: 100%;
     }
     button {
       font-size: 1.3em;
-      padding: 16px 24px;
+      padding: 14px 24px;
       border: none;
       border-radius: 12px;
       background-color: #007bff;
       color: white;
       cursor: pointer;
       flex: 1 1 100px;
+      max-width: 160px;
     }
     button:hover {
       background-color: #0056b3;
@@ -57,7 +69,7 @@
       background: #111;
       color: #fff;
       text-align: center;
-      width: 60%;
+      width: 80%;
       max-width: 250px;
     }
     #feedback {
@@ -69,7 +81,11 @@
 </head>
 <body>
 
-  <h1>Memory training - reversed digits</h1>
+  <div>
+    <h1>MEMORY TRAINING</h1>
+    <h2>Reversed digits</h2>
+  </div>
+
   <div id="score">Score: 0 / 0</div>
 
   <div class="btn-group">
@@ -78,7 +94,7 @@
     <button id="nextBtn" disabled>⏭️ Next</button>
   </div>
 
-  <input type="text" id="response" placeholder="Type here" disabled />
+  <input type="tel" inputmode="numeric" pattern="[0-9]*" id="response" placeholder="Type here" disabled />
   <div id="feedback"></div>
 
   <script>
@@ -145,7 +161,7 @@
       }
     });
 
-    // Fix for some mobile browsers not loading voices
+    // Ensure voices load properly
     window.speechSynthesis.onvoiceschanged = () => {};
   </script>
 </body>
