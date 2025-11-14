@@ -109,6 +109,7 @@
     let currentNumber = "";
     let score = 0;
     let attempts = 0;
+    let replayUsed = false; // ✅ nouvelle variable
 
     function updateScore() {
       document.getElementById("score").textContent = `Score: ${score} / ${attempts}`;
@@ -142,13 +143,17 @@
       currentNumber = generateNumber();
       speakNumber(currentNumber);
 
+      replayUsed = false; // ✅ reset du flag
       document.getElementById("replayBtn").disabled = false;
       document.getElementById("nextBtn").disabled = false;
     }
 
     document.getElementById("startBtn").addEventListener("click", () => startNewNumber());
     document.getElementById("replayBtn").addEventListener("click", () => {
-      if (currentNumber) speakNumber(currentNumber);
+      if (currentNumber) {
+        replayUsed = true; // ✅ si on clique sur replay, on marque la séquence comme "rejouée"
+        speakNumber(currentNumber);
+      }
     });
     document.getElementById("nextBtn").addEventListener("click", () => startNewNumber());
 
@@ -162,15 +167,19 @@
     });
 
     inputField.addEventListener("keydown", (e) => {
-      // Autorise Enter et effacement
       if (e.key === "Enter") {
         const userInput = e.target.value.trim();
         const reversed = currentNumber.split("").reverse().join("");
         attempts++;
         if (userInput === reversed) {
-          score++;
-          document.getElementById("feedback").textContent = "✅ Correct!";
-          document.getElementById("feedback").style.color = "lightgreen";
+          if (!replayUsed) { // ✅ pas de point si replay utilisé
+            score++;
+            document.getElementById("feedback").textContent = "✅ Correct!";
+            document.getElementById("feedback").style.color = "lightgreen";
+          } else {
+            document.getElementById("feedback").textContent = "ℹ️ Correct (no point, replay used)";
+            document.getElementById("feedback").style.color = "orange";
+          }
         } else {
           document.getElementById("feedback").textContent = "❌ Wrong (" + reversed + ")";
           document.getElementById("feedback").style.color = "red";
